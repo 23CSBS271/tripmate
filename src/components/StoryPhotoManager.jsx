@@ -27,6 +27,13 @@ export default function StoryPhotoManager({ photos, onChange }) {
   const handlePhotoUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Check file size for GIF files
+      if (file.type === 'image/gif' && file.size > 5 * 1024 * 1024) { // 5MB limit for GIFs
+        setErrorMessage('Uploaded file size is large');
+        setShowErrorModal(true);
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (event) => {
         setNewPhotoUrl(event.target?.result || '');

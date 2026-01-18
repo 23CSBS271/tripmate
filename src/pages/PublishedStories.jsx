@@ -75,7 +75,7 @@ export default function PublishedStories() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 max-w-5xl">
+      <div className="container mx-auto px-4 py-16 max-w-7xl">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">Travel Stories</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -116,8 +116,7 @@ export default function PublishedStories() {
                     </div>
                     {story.userId && (
                       <div className="flex items-center gap-2">
-                        <span>By</span>
-                        <span className="font-medium text-gray-700">{story.userId.name}</span>
+                        <span className="font-medium text-gray-700">By {story.userId.fullName}</span>
                       </div>
                     )}
                   </div>

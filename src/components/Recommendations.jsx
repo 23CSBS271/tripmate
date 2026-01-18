@@ -18,18 +18,42 @@ export const Recommendations = ({ destination }) => {
     };
   }, [destination]);
 
+  const fetchWithRetry = async (url, options, maxRetries = 3, delay = 3000) => {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await fetch(url, options);
+        if (response.ok) {
+          return response;
+        }
+        if (response.status === 504 && attempt < maxRetries) {
+          console.warn(`Attempt ${attempt} failed with 504, retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          continue;
+        }
+        return response;
+      } catch (err) {
+        if (attempt < maxRetries) {
+          console.warn(`Attempt ${attempt} failed, retrying in ${delay}ms...`, err);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          continue;
+        }
+        throw err;
+      }
+    }
+  };
+
   const fetchRecommendations = async () => {
     if (!isMounted.current) return;
     setLoading(true);
     setError(null);
-    
+
     try {
       const geoResponse = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(destination)}&limit=1`
       );
-      
+
       if (!geoResponse.ok) throw new Error('Failed to geocode destination');
-      
+
       const geoData = await geoResponse.json();
 
       if (!geoData || !geoData[0]) {
@@ -65,7 +89,7 @@ export const Recommendations = ({ destination }) => {
       let restaurantsData = null;
 
       try {
-        const hotelsResponse = await fetch('https://overpass-api.de/api/interpreter', {
+        const hotelsResponse = await fetchWithRetry('https://overpass-api.de/api/interpreter', {
           method: 'POST',
           body: hotelsQuery,
           signal: AbortSignal.timeout(35000)
@@ -81,7 +105,7 @@ export const Recommendations = ({ destination }) => {
       }
 
       try {
-        const restaurantsResponse = await fetch('https://overpass-api.de/api/interpreter', {
+        const restaurantsResponse = await fetchWithRetry('https://overpass-api.de/api/interpreter', {
           method: 'POST',
           body: restaurantsQuery,
           signal: AbortSignal.timeout(35000)

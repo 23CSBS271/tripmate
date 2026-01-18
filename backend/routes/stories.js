@@ -18,7 +18,7 @@ router.get('/my', auth, async (req, res) => {
 router.get('/published', async (req, res) => {
   try {
     const stories = await Story.find({ status: 'published' })
-      .populate('userId', 'name')
+      .populate('userId', 'fullName')
       .sort({ createdAt: -1 });
     res.json(stories);
   } catch (error) {
@@ -30,7 +30,7 @@ router.get('/published', async (req, res) => {
 router.get('/public/:id', async (req, res) => {
   try {
     const story = await Story.findOne({ _id: req.params.id, status: 'published' })
-      .populate('userId', 'name');
+      .populate('userId', 'fullName');
     if (!story) {
       return res.status(404).json({ message: 'Story not found' });
     }

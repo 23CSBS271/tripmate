@@ -116,6 +116,11 @@ export default function PublicStory() {
                     <span>{story.location}</span>
                   </div>
                 )}
+                {story.userId && (
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-700">By {story.userId.fullName}</span>
+                  </div>
+                )}
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4">
                 {story.title}
