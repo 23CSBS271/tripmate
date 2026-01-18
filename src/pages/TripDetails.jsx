@@ -82,13 +82,6 @@ export const TripDetails = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-gray-900"></div>
         <div className="absolute inset-0 flex items-end">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center gap-2 text-white/80 hover:text-white mb-6 transition"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Dashboard</span>
-            </button>
             <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">{trip.destination}</h1>
             <div className="flex flex-wrap gap-4 text-white/90">
               <div className="flex items-center gap-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-lg">

@@ -60,7 +60,8 @@ function MapController({ center, zoom, selectedTrip }) {
         map.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
             const pos = layer.getLatLng();
-            if (pos.lat === selectedTrip.lat && pos.lng === selectedTrip.lon) {
+            const tolerance = 0.0001;
+            if (Math.abs(pos.lat - selectedTrip.lat) < tolerance && Math.abs(pos.lng - selectedTrip.lon) < tolerance) {
               layer.openPopup();
             }
           }
