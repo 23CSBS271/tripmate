@@ -17,7 +17,9 @@ router.get('/my', auth, async (req, res) => {
 // Get published stories (public)
 router.get('/published', async (req, res) => {
   try {
-    const stories = await Story.find({ status: 'published' }).sort({ createdAt: -1 });
+    const stories = await Story.find({ status: 'published' })
+      .populate('userId', 'name')
+      .sort({ createdAt: -1 });
     res.json(stories);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
@@ -27,7 +29,8 @@ router.get('/published', async (req, res) => {
 // Get single published story (public)
 router.get('/public/:id', async (req, res) => {
   try {
-    const story = await Story.findOne({ _id: req.params.id, status: 'published' });
+    const story = await Story.findOne({ _id: req.params.id, status: 'published' })
+      .populate('userId', 'name');
     if (!story) {
       return res.status(404).json({ message: 'Story not found' });
     }

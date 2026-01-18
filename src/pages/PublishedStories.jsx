@@ -109,9 +109,17 @@ export default function PublishedStories() {
                   </Link>
                 )}
                 <div className="p-8">
-                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                    <Calendar className="w-4 h-4" />
-                    <time>{formatDate(story.createdAt)}</time>
+                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <time>{formatDate(story.createdAt)}</time>
+                    </div>
+                    {story.userId && (
+                      <div className="flex items-center gap-2">
+                        <span>By</span>
+                        <span className="font-medium text-gray-700">{story.userId.name}</span>
+                      </div>
+                    )}
                   </div>
 
                   <Link
